@@ -26,7 +26,7 @@ def addPoints(amount, stat):
 def removePoints(amount, stat):
     statline[stat] -= amount
 
-ing = input()
+ing = "" 
 while ing != "e":
     genCharacter()
     ing = input()
