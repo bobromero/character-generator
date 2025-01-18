@@ -7,26 +7,49 @@ import random
 from names_generator import generate_name
 statline = [20,20,20,20,20,20] # str,dex,health,confidence,int,charisma
 stats = ["Strength", "Dexterity", "Health", "Confidence", "Intelligence", "Charisma"]
-availablePoints = 20
+
+#i want to use all the available Points
+#the system I am coming up with is
+
+
+# I could traverse through the stats randomly and assign the remaining points to the last stat
+# this could create less even characters that are good at 1 thing, as well as whatever the random assignment gives
+
 
 
 def genCharacter():
+    availablePoints = 20
     for i in range(0,len(statline)):
         x = random.randint(-1,1)
         if x > 0:
-            addPoints(random.randint(1,20),i)
+            amount = random.randint(1,20) 
+
+            if availablePoints < amount:
+                amount = availablePoints
+            availablePoints -= amount;
+            addPoints(amount,i)
         elif x < 0:
-            removePoints(random.randint(1,20),i)
+            amount = random.randint(1,20) 
 
-        print(stats[i], ":\t", statline[i]) 
-    print("Name: ", generate_name())
-def addPoints(amount, stat):
+            if statline[i] < amount:
+                amount = statline[i] 
+            availablePoints += amount
+            removePoints(amount,i)
+    if availablePoints > 0:
+        statline[len(statline)-1] += availablePoints
+def addPoints(amount, stat): 
     statline[stat] += amount
-
 def removePoints(amount, stat):
     statline[stat] -= amount
 
 ing = "" 
 while ing != "e":
+    statline = [20,20,20,20,20,20]
+    availablePoints = 20
     genCharacter()
+    random.shuffle(statline) 
+    for i in range(0,len(stats)):
+        print(stats[i], ":\t", statline[i]) 
+    print("Name: ", generate_name())
+
     ing = input()
